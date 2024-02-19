@@ -43,15 +43,16 @@ class NewsDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Retrieve the news object from arguments
-        val news = arguments?.getParcelable<News>("news")
-        // Now you can use the `news` object as needed
-        news?.let {
-            // Access news properties and update UI
-            binding.titleTextView.text = it.title
-            binding.descriptionTextView.text = it.description
-            binding.contentTextView.text = it.content
-        }
+        // Retrieve individual parameters from arguments
+        val title = arguments?.getString("title")
+        val description = arguments?.getString("description")
+        val content = arguments?.getString("content")
+
+        // Now you can use these parameters to update your UI
+        title?.let { binding.titleTextView.text = it }
+        description?.let { binding.descriptionTextView.text = it }
+        content?.let { binding.contentTextView.text = it }
+
     }
 
     override fun onDestroyView() {
