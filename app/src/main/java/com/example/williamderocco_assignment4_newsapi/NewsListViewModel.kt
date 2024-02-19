@@ -17,8 +17,10 @@ class NewsListViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
+            // Initialize newsApiService inside the coroutine
+            val newsApiService = RetrofitService.newsApiService
 
-            fetchTopBusinessNews()?.let { articles ->
+            fetchTopBusinessNews(newsApiService)?.let { articles ->
                 // Update the newsList with the fetched articles
                 // For example, you can add them to the existing list
                 newsList.clear()
@@ -33,9 +35,7 @@ class NewsListViewModel : ViewModel() {
         }
     }
 
-    private val newsApiService: NewsApiService = RetrofitService.newsApiService
-
-    suspend fun fetchTopBusinessNews(): List<Article>? {
+    private suspend fun fetchTopBusinessNews(newsApiService: NewsApiService): List<Article>? {
         return withContext(Dispatchers.IO) {
             try {
                 val response = newsApiService.getTopBusinessNews().execute()
@@ -43,15 +43,15 @@ class NewsListViewModel : ViewModel() {
                     Log.d(TAG, response.body()?.articles.toString())
                     response.body()?.articles
                 } else {
-                    Log.d(TAG, "failed somewhere")
                     // Handle unsuccessful response
                     null
                 }
             } catch (e: Exception) {
-                Log.d(TAG, "encountered error: ", e)
                 // Handle network errors
+                Log.d(TAG, "encountered error: ", e)
                 null
             }
         }
     }
 }
+
