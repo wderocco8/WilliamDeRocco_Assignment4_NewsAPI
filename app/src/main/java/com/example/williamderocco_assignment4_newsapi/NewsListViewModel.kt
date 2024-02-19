@@ -5,6 +5,8 @@ import java.util.Date
 import java.util.UUID
 import kotlin.random.Random
 
+
+
 class NewsListViewModel : ViewModel() {
 
     val newsList = mutableListOf<News>()
