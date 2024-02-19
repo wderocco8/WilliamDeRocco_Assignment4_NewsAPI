@@ -1,7 +1,7 @@
 package com.example.williamderocco_assignment4_newsapi
 
 //noinspection SuspiciousImport
-import android.R
+import com.example.williamderocco_assignment4_newsapi.R
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,8 +44,8 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnItemClickListener {
         // Initialize Spinner
         val categorySpinner = binding.categorySpinner
         val categoryList = listOf("business", "entertainment", "general", "health", "science", "sports", "technology") // Example category list
-        val spinnerAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, categoryList)
-        spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categoryList)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = spinnerAdapter
 
         // Spinner item selection listener
@@ -68,10 +69,19 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(news: News) {
-        // Navigate to the FragmentNewsDetail passing necessary data
-        val action = NewsListFragmentDirections.actionNewsListFragmentToFragmentNewsDetail()
-        findNavController().navigate(action)
+        val bundle = Bundle().apply {
+            // Pass individual parameters
+            putString("title", news.title)
+            putString("description", news.description)
+            putString("content", news.content)
+        }
+        // Navigate to NewsDetailFragment using NavController
+        findNavController().navigate(
+            R.id.action_newsListFragment_to_fragmentNewsDetail,
+            bundle
+        )
     }
+
 
 
     override fun onDestroyView() {
