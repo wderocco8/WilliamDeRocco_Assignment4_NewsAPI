@@ -25,6 +25,7 @@ class NewsListViewModel : ViewModel() {
                 // Update the newsList with the fetched articles
                 // For example, you can add them to the existing list
                 _newsList.value = articles
+                Log.d(TAG, "articles" + articles.toString())
             }
         }
     }

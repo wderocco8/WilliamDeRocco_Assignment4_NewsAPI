@@ -43,7 +43,7 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnItemClickListener {
 
         // Initialize Spinner
         val categorySpinner = binding.categorySpinner
-        val categoryList = listOf("business", "entertainment", "general", "health", "science", "sports", "technology") // Example category list
+        val categoryList = listOf("Business", "Entertainment", "General", "Health", "Science", "Sports", "Technology") // Example category list
         val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categoryList)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = spinnerAdapter
@@ -74,6 +74,7 @@ class NewsListFragment : Fragment(), NewsListAdapter.OnItemClickListener {
             putString("title", news.title)
             putString("description", news.description)
             putString("content", news.content)
+            putString("imageUrl", news.imageUrl)
         }
         // Navigate to NewsDetailFragment using NavController
         findNavController().navigate(
