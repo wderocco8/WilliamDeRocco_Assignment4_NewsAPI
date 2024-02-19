@@ -25,27 +25,24 @@ class NewsHolder(
     }
 }
 
-class NewsListAdapter(
-    private val newsList: List<News>
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NewsListAdapter(private var newsList: List<News>) : RecyclerView.Adapter<NewsHolder>() {
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RecyclerView.ViewHolder {
+    fun updateNewsList(newList: List<News>) {
+        newsList = newList
+        notifyDataSetChanged()
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListItemNewsBinding.inflate(inflater, parent, false)
-
         return NewsHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NewsHolder, position: Int) {
         val news = newsList[position]
-        when (holder) {
-            is NewsHolder -> holder.bind(news)
-        }
+        holder.bind(news)
     }
 
     override fun getItemCount() = newsList.size
-
 }
+

@@ -22,10 +22,10 @@ class NewsListFragment : Fragment() {
 
     private val newsListViewModel: NewsListViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "Total crimes: ${newsListViewModel.newsList.size}")
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        Log.d(TAG, "Total crimes: ${newsListViewModel.newsList.size}")
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,12 +36,18 @@ class NewsListFragment : Fragment() {
 
         binding.newsRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        val newsList = newsListViewModel.newsList
-        val adapter = NewsListAdapter(newsList)
+        val adapter = NewsListAdapter(emptyList())
         binding.newsRecyclerView.adapter = adapter
+
+        // Observe changes to the newsList LiveData
+        newsListViewModel.newsList.observe(viewLifecycleOwner) { newsList ->
+            adapter.updateNewsList(newsList)
+        }
+
 
         return binding.root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

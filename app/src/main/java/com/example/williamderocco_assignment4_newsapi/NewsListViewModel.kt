@@ -1,6 +1,8 @@
 package com.example.williamderocco_assignment4_newsapi
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +13,8 @@ private const val TAG = "NewsListViewModel"
 
 class NewsListViewModel : ViewModel() {
 
-    val newsList = mutableListOf<News>()
+    private val _newsList = MutableLiveData<List<News>>()
+    val newsList: LiveData<List<News>> = _newsList
 
     init {
         viewModelScope.launch {
@@ -21,9 +24,7 @@ class NewsListViewModel : ViewModel() {
             fetchTopBusinessNews(newsApiService)?.let { articles ->
                 // Update the newsList with the fetched articles
                 // For example, you can add them to the existing list
-                articles.map { article ->
-                    newsList += article
-                }
+                _newsList.value = articles
             }
 
             Log.d(TAG, "newsList: " + newsList.toString())
