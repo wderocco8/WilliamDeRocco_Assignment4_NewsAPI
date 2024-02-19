@@ -1,5 +1,6 @@
 package com.example.williamderocco_assignment4_newsapi
 
+//noinspection SuspiciousImport
 import android.R
 import android.os.Bundle
 import android.util.Log
@@ -10,12 +11,14 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.williamderocco_assignment4_newsapi.databinding.FragmentNewsListBinding
 
 private const val TAG = "NewsListFragment"
 
-class NewsListFragment : Fragment() {
+class NewsListFragment : Fragment(), NewsListAdapter.OnItemClickListener {
 
     private var _binding: FragmentNewsListBinding? = null
     private val binding
@@ -24,11 +27,6 @@ class NewsListFragment : Fragment() {
         }
 
     private val newsListViewModel: NewsListViewModel by viewModels()
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        Log.d(TAG, "Total crimes: ${newsListViewModel.newsList.size}")
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +37,7 @@ class NewsListFragment : Fragment() {
 
         // Initialize RecyclerView
         binding.newsRecyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = NewsListAdapter(emptyList())
+        val adapter = NewsListAdapter(emptyList(), this) // pass in `this` as listener for NewsListAdapter
         binding.newsRecyclerView.adapter = adapter
 
         // Initialize Spinner
@@ -61,14 +59,18 @@ class NewsListFragment : Fragment() {
             }
         }
 
-
         // Observe changes to the newsList LiveData
         newsListViewModel.newsList.observe(viewLifecycleOwner) { newsList ->
             adapter.updateNewsList(newsList)
         }
 
-
         return binding.root
+    }
+
+    override fun onItemClick(news: News) {
+        // Navigate to the FragmentNewsDetail passing necessary data
+        val action = NewsListFragmentDirections.actionNewsListFragmentToFragmentNewsDetail()
+        findNavController().navigate(action)
     }
 
 

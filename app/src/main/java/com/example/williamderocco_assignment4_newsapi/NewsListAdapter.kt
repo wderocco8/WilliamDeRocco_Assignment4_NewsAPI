@@ -27,7 +27,10 @@ class NewsHolder(
     }
 }
 
-class NewsListAdapter(private var newsList: List<News>) : RecyclerView.Adapter<NewsHolder>() {
+class NewsListAdapter(private var newsList: List<News>, private val listener: OnItemClickListener) : RecyclerView.Adapter<NewsHolder>() {
+    interface OnItemClickListener {
+        fun onItemClick(news: News)
+    }
 
     fun updateNewsList(newList: List<News>) {
         newsList = newList
@@ -43,6 +46,10 @@ class NewsListAdapter(private var newsList: List<News>) : RecyclerView.Adapter<N
     override fun onBindViewHolder(holder: NewsHolder, position: Int) {
         val news = newsList[position]
         holder.bind(news)
+
+        holder.itemView.setOnClickListener {
+            listener.onItemClick(news)
+        }
     }
 
     override fun getItemCount() = newsList.size
