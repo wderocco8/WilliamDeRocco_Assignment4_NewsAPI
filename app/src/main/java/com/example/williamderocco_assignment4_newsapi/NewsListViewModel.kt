@@ -31,7 +31,6 @@ class NewsListViewModel : ViewModel() {
 
     // Function to fetch news by category
     fun fetchNewsByCategory(category: String) {
-        Log.d(TAG, "cat " + category)
         viewModelScope.launch {
             // Initialize newsApiService inside the coroutine
             val newsApiService = RetrofitService.newsApiService
@@ -39,7 +38,6 @@ class NewsListViewModel : ViewModel() {
             fetchTopNews(newsApiService, category)?.let { articles ->
                 // Update the newsList with the fetched articles
                 // For example, you can add them to the existing list
-                Log.d(TAG, articles.toString())
                 _newsList.value = articles
             }
 
@@ -49,7 +47,6 @@ class NewsListViewModel : ViewModel() {
     private suspend fun fetchTopNews(newsApiService: NewsApiService, category: String = ""): List<News>? {
         return withContext(Dispatchers.IO) {
             try {
-                Log.d(TAG, "confirm cat " + category)
                 val response = newsApiService.getTopNewsByCategory(category).execute()
                 if (response.isSuccessful) {
                     response.body()?.articles

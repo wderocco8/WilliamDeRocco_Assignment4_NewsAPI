@@ -11,7 +11,6 @@ object RetrofitService {
 
     private val retrofit: Retrofit by lazy {
         try {
-            Log.d(TAG, "trying to build")
             Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
