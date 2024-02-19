@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.Date
-import java.util.UUID
 
 private const val TAG = "NewsListViewModel"
 
@@ -23,24 +21,20 @@ class NewsListViewModel : ViewModel() {
             fetchTopBusinessNews(newsApiService)?.let { articles ->
                 // Update the newsList with the fetched articles
                 // For example, you can add them to the existing list
-                newsList.clear()
-                newsList.addAll(articles.map { article ->
-                    News(
-                        id = UUID.randomUUID(),
-                        title = article.title,
-                        date = Date(),
-                    )
-                })
+                articles.map { article ->
+                    newsList += article
+                }
             }
+
+            Log.d(TAG, "newsList: " + newsList.toString())
         }
     }
 
-    private suspend fun fetchTopBusinessNews(newsApiService: NewsApiService): List<Article>? {
+    private suspend fun fetchTopBusinessNews(newsApiService: NewsApiService): List<News>? {
         return withContext(Dispatchers.IO) {
             try {
                 val response = newsApiService.getTopBusinessNews().execute()
                 if (response.isSuccessful) {
-                    Log.d(TAG, response.body()?.articles.toString())
                     response.body()?.articles
                 } else {
                     // Handle unsuccessful response

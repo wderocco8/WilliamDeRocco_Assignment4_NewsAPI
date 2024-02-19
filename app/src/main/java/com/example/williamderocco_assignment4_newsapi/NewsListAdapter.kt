@@ -12,7 +12,8 @@ class NewsHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(news: News) {
         binding.newsTitle.text = news.title
-        binding.newsDate.text = news.date.toString()
+        binding.newsAuthor.text = news.author
+        binding.newsDate.text = news.publishDate
 
         binding.root.setOnClickListener {
             Toast.makeText(

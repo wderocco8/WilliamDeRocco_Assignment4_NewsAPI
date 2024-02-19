@@ -6,10 +6,10 @@ import com.google.gson.annotations.SerializedName
 data class NewsResponse(
     val status: String,
     @SerializedName("totalResults") val totalResults: Int,
-    val articles: List<Article>
+    val articles: List<News>
 )
 
-data class Article(
+data class News(
     val source: Source,
     val author: String?,
     val title: String,
