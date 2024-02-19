@@ -7,6 +7,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.williamderocco_assignment4_newsapi.databinding.ListItemNewsBinding
 
+private const val TAG = "NewsListAdapter"
+
 class NewsHolder(
     private val binding: ListItemNewsBinding
 ) : RecyclerView.ViewHolder(binding.root) {

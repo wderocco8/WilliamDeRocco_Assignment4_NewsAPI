@@ -21,20 +21,36 @@ class NewsListViewModel : ViewModel() {
             // Initialize newsApiService inside the coroutine
             val newsApiService = RetrofitService.newsApiService
 
-            fetchTopBusinessNews(newsApiService)?.let { articles ->
+            fetchTopNews(newsApiService)?.let { articles ->
                 // Update the newsList with the fetched articles
                 // For example, you can add them to the existing list
                 _newsList.value = articles
             }
-
-            Log.d(TAG, "newsList: " + newsList.toString())
         }
     }
 
-    private suspend fun fetchTopBusinessNews(newsApiService: NewsApiService): List<News>? {
+    // Function to fetch news by category
+    fun fetchNewsByCategory(category: String) {
+        Log.d(TAG, "cat " + category)
+        viewModelScope.launch {
+            // Initialize newsApiService inside the coroutine
+            val newsApiService = RetrofitService.newsApiService
+
+            fetchTopNews(newsApiService, category)?.let { articles ->
+                // Update the newsList with the fetched articles
+                // For example, you can add them to the existing list
+                Log.d(TAG, articles.toString())
+                _newsList.value = articles
+            }
+
+        }
+    }
+
+    private suspend fun fetchTopNews(newsApiService: NewsApiService, category: String = ""): List<News>? {
         return withContext(Dispatchers.IO) {
             try {
-                val response = newsApiService.getTopBusinessNews().execute()
+                Log.d(TAG, "confirm cat " + category)
+                val response = newsApiService.getTopNewsByCategory(category).execute()
                 if (response.isSuccessful) {
                     response.body()?.articles
                 } else {
