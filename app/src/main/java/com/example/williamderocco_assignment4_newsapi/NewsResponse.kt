@@ -1,5 +1,6 @@
 package com.example.williamderocco_assignment4_newsapi
 
+// ChatGPT -> used for SerializedName (not sure if needed)
 import com.google.gson.annotations.SerializedName
 
 data class NewsResponse(
